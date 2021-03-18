@@ -4,21 +4,21 @@
 import axios from 'axios'
 // console.log(axios)
 
-console.log("1. about to fetch data with axios")
+// console.log("1. about to fetch data with axios")
 // http vs. tcp/ip
 // lambda-times-api.herokuapp.com/ -- human-readable form of the IP address 192.75.853.
 // what is /friends? not a directory/file, just an endpoint
 
 // pending vs. fulfilled vs rejected vs settled
 
-axios.get("https://lambda-times-api.herokuapp.com/friends")
-  .then(futureData => {
-    console.log("2. here is our future data!", futureData)
-  })
-  .catch(drama => {
-    console.log(drama)})
+// axios.get("https://lambda-times-api.herokuapp.com/friends")
+//   .then(futureData => {
+//     console.log("2. here is our future data!", futureData)
+//   })
+//   .catch(drama => {
+//     console.log(drama)})
 
-console.log("3. we requestd data with axios!")
+// console.log("3. we requestd data with axios!")
 
 // Before writing code to use the data returned from the API,
 // explore the endpoints and data returned!
@@ -37,6 +37,11 @@ console.log("3. we requestd data with axios!")
 //  * With Chrome and the Network Tab
 //  * With JS using the native fetch [STRETCH]
 
+
+fetch("https://lambda-times-api.herokuapp.com/friends")
+  .then(response => response.json()) // return ANOTHER promise!!!
+  .then(bodyOfResponse => console.log(bodyOfResponse))
+  .catch()
 
 // 👉 TASK 2- Select the "entry point", the element
 // inside of which we'll inject our dog cards 
@@ -83,18 +88,45 @@ function dogCardMaker({ imageURL, breed }) { // destructuring - {imageURL: 'http
 //    * ON FAILURE: log the error to the console
 //    * IN ANY CASE: log "done" to the console
 
-// stub out aka scaffold the axios request
-axios.get("https://dog.ceo/api/breed/pug/images/random/5")
-  .then(res => {
-    debugger
-  })
-  .catch(res => {
-    debugger
-  })
+// how do I send a request?
+// what do I get back?
 
+// stub out aka scaffold the axios request
+// axios.get("https://dog.ceo/api/breed/mastiff/images/random/5")
+// .then(res => { // fulfilled (and settled)
+//   res.data.message.forEach((imageURL) => {
+//     const dogCard = dogCardMaker({imageURL, breed: 'mastiff'});
+//     entryPoint.appendChild(dogCard)
+//   })
+// })
+//   .catch(err => {  // rejected (and settled)
+//     console.log('oh nos')
+//   })
+//   .finally(() =>{ // this runs when the promise is settled
+//     console.log('all done')
+//   })
 
 // 👉 (OPTIONAL) TASK 6- Wrap the fetching operation inside a function `getDogs`
 // that takes a breed and a count (of dogs)
+function getDogs(breed, numDogs) {
+  const url =  `https://dog.ceo/api/breed/${breed}/images/random/${numDogs}` // string interpolation
+
+  axios.get(url)    
+    .then(res => { // fulfilled (and settled)
+        const imageURLs = res.data.message
+        imageURLs.forEach((imageURL) => {
+        const dogCard = dogCardMaker({imageURL, breed}); // this is shorthand! https://alligator.io/js/object-property-shorthand-es6/
+        entryPoint.appendChild(dogCard)
+      })
+    })
+    .catch(err => {  // rejected (and settled)
+      console.log('oh nos')
+    })
+    .finally(() =>{ // this runs when the promise is settled
+      console.log('all done')
+    })
+}
+getDogs("mastiff", 5)
 
 
 // 👉 (OPTIONAL) TASK 7- Put a button in index.html to 'get dogs' and add a click
