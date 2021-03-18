@@ -1,6 +1,27 @@
 // Imports at the top of the file!
 // We never nest imports inside blocks of code!
 
+import axios from 'axios'
+// console.log(axios)
+
+console.log("1. about to fetch data with axios")
+// http vs. tcp/ip
+// lambda-times-api.herokuapp.com/ -- human-readable form of the IP address 192.75.853.
+// what is /friends? not a directory/file, just an endpoint
+
+// pending vs. fulfilled vs rejected vs settled
+
+axios.get("https://lambda-times-api.herokuapp.com/friends")
+  .then(futureData => {
+    console.log("2. here is our future data!", futureData)
+  })
+  .catch(drama => {
+    console.log(drama)})
+
+console.log("3. we requestd data with axios!")
+
+// Before writing code to use the data returned from the API,
+// explore the endpoints and data returned!
 
 // 👉 TASK 1- Test out the following endpoints:
 
